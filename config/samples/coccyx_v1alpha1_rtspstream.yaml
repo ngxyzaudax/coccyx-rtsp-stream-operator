@@ -1,0 +1,11 @@
+apiVersion: coccyx.coccyx.dev/v1alpha1
+kind: RtspStream
+metadata:
+  labels:
+    app.kubernetes.io/name: coccyx-rtsp-stream-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: rtspstream-sample
+  namespace: coccyx
+spec:
+  url: "rtsp://example.com:554/stream1"
+  id: "stream-001"

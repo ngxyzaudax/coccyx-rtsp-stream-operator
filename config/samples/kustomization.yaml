@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- coccyx_v1alpha1_rtspstream.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples
