@@ -123,12 +123,12 @@ func (r *RtspStreamReconciler) podForRtspStream(rtspStream *coccyxv1alpha1.RtspS
 				},
 				Resources: corev1.ResourceRequirements{
 					Requests: corev1.ResourceList{
-						"memory": resource.MustParse("128Mi"),
-						"cpu":    resource.MustParse("100m"),
+						"memory": resource.MustParse("2Gi"),
+						"cpu":    resource.MustParse("1000m"),
 					},
 					Limits: corev1.ResourceList{
-						"memory": resource.MustParse("256Mi"),
-						"cpu":    resource.MustParse("200m"),
+						"memory": resource.MustParse("8Gi"),
+						"cpu":    resource.MustParse("4000m"),
 					},
 				},
 				LivenessProbe: &corev1.Probe{
