@@ -26,6 +26,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/intstr"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -121,6 +122,13 @@ func (r *RtspStreamReconciler) podForRtspStream(rtspStream *coccyxv1alpha1.RtspS
 						Value: "rtsp_frame_reader.log",
 					},
 				},
+				Ports: []corev1.ContainerPort{
+					{
+						Name:          "http",
+						ContainerPort: 8080,
+						Protocol:      corev1.ProtocolTCP,
+					},
+				},
 				Resources: corev1.ResourceRequirements{
 					Requests: corev1.ResourceList{
 						"memory": resource.MustParse("2Gi"),
@@ -133,8 +141,9 @@ func (r *RtspStreamReconciler) podForRtspStream(rtspStream *coccyxv1alpha1.RtspS
 				},
 				LivenessProbe: &corev1.Probe{
 					ProbeHandler: corev1.ProbeHandler{
-						Exec: &corev1.ExecAction{
-							Command: []string{"python", "-c", "import os; exit(0 if os.path.exists('/tmp/rtsp_frame_reader.log') else 1)"},
+						HTTPGet: &corev1.HTTPGetAction{
+							Path: "/health",
+							Port: intstr.FromInt(8080),
 						},
 					},
 					InitialDelaySeconds: 30,
@@ -144,8 +153,9 @@ func (r *RtspStreamReconciler) podForRtspStream(rtspStream *coccyxv1alpha1.RtspS
 				},
 				ReadinessProbe: &corev1.Probe{
 					ProbeHandler: corev1.ProbeHandler{
-						Exec: &corev1.ExecAction{
-							Command: []string{"python", "-c", "import os; exit(0 if os.path.exists('/tmp/rtsp_frame_reader.log') else 1)"},
+						HTTPGet: &corev1.HTTPGetAction{
+							Path: "/ready",
+							Port: intstr.FromInt(8080),
 						},
 					},
 					InitialDelaySeconds: 10,
