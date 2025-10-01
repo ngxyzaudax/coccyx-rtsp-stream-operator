@@ -131,12 +131,12 @@ func (r *RtspStreamReconciler) podForRtspStream(rtspStream *coccyxv1alpha1.RtspS
 				},
 				Resources: corev1.ResourceRequirements{
 					Requests: corev1.ResourceList{
-						"memory": resource.MustParse("2Gi"),
-						"cpu":    resource.MustParse("1000m"),
+						"memory": resource.MustParse("512Mi"),
+						"cpu":    resource.MustParse("200m"),
 					},
 					Limits: corev1.ResourceList{
-						"memory": resource.MustParse("8Gi"),
-						"cpu":    resource.MustParse("4000m"),
+						"memory": resource.MustParse("2Gi"),
+						"cpu":    resource.MustParse("1000m"),
 					},
 				},
 				LivenessProbe: &corev1.Probe{
@@ -146,7 +146,7 @@ func (r *RtspStreamReconciler) podForRtspStream(rtspStream *coccyxv1alpha1.RtspS
 							Port: intstr.FromInt(8080),
 						},
 					},
-					InitialDelaySeconds: 10,
+					InitialDelaySeconds: 30,
 					PeriodSeconds:       1,
 					TimeoutSeconds:      5,
 					FailureThreshold:    3,
@@ -158,7 +158,7 @@ func (r *RtspStreamReconciler) podForRtspStream(rtspStream *coccyxv1alpha1.RtspS
 							Port: intstr.FromInt(8080),
 						},
 					},
-					InitialDelaySeconds: 10,
+					InitialDelaySeconds: 30,
 					PeriodSeconds:       10,
 					TimeoutSeconds:      5,
 					FailureThreshold:    3,
